@@ -5,6 +5,7 @@ var timerElement = document.querySelector("#time");
 var startButton = document.querySelector("#start");
 var timer;
 var timerCount;
+var currentQuestion;
 var theQuestions =[ 
   {
      question: "what year did the first Star Wars come out?", 
@@ -41,10 +42,36 @@ var theQuestions =[
 function startGame() {
   isWin = false;
   timerCount = 20;
+  currentQuestion = 0;
   // Prevents start button from being clicked when round is in progress
   startButton.disabled = true;
   
   startTimer()
+  document.getElementById("start-screen").setAttribute("class", "hide")
+  document.getElementById("questions").setAttribute("class", "")
+  showQuestion()
+}
+
+function showQuestion(){
+  document.getElementById("question-title").textContent = theQuestions[currentQuestion].question;
+  let choiceContainer = document.getElementById("choices");
+  choiceContainer.innerHTML = "";
+  theQuestions[currentQuestion].answers.forEach(choice => {
+    let newButton = document.createElement("button");
+    newButton.textContent = choice;
+    newButton.addEventListener("click", checkAnswer);
+    choiceContainer.appendChild(newButton)
+  })
+}
+
+function checkAnswer() {
+  
+  if( this.value !== theQuestions[currentQuestion].answer){
+    window.alert("you are wrong")
+  }
+  else {
+    window.alert("right")
+  }
 }
 function winGame() {
   window.alert("you win")
